@@ -3,7 +3,7 @@
     <v-text-field v-model="brand.name" label="请输入品牌名称" required :rules="nameRules"/>
     <v-text-field v-model="brand.letter" label="请输入品牌首字母" required :rules="letterRules"/>
     <v-cascader
-      url="/item/category/list"
+      url="/item/category"
       multiple
       required
       v-model="brand.categories"
@@ -72,7 +72,7 @@
           this.$http({
             method: this.isEdit ? 'put' : 'post',
             url: '/item/brand',
-            data: this.$qs.stringify(params)
+            data: this.$qs.stringify( params)
           }).then(() => {
             // 关闭窗口
             this.$emit("close");

@@ -1,7 +1,7 @@
 <template>
   <v-card>
       <v-flex xs12 sm10>
-        <v-tree url="/item/category/list"
+        <v-tree url="/item/category/list/"
                 :isEdit="isEdit"
                 @handleAdd="handleAdd"
                 @handleEdit="handleEdit"
@@ -22,14 +22,19 @@
     },
     methods: {
       handleAdd(node) {
-        console.log("add .... ");
-        console.log(node);
+        this.loading=true;
+        this.$http.post("/item/category", node)
+        this.loading = false;
       },
       handleEdit(id, name) {
-        console.log("edit... id: " + id + ", name: " + name)
+        this.loading=true;
+        this.$http.put("/item/category", {id,name})
+        this.loading = false;
       },
       handleDelete(id) {
-        console.log("delete ... " + id)
+        this.loading=true;
+        this.$http.delete("/item/category/"+id)
+        this.loading = false;
       },
       handleClick(node) {
         console.log(node)

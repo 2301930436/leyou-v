@@ -6,13 +6,13 @@
       <v-flex xs3>
         状态：
         <v-btn-toggle mandatory v-model.lazy="filter.saleable">
-          <v-btn flat :value="2">
+          <v-btn flat>
             全部
           </v-btn>
-          <v-btn flat :value="1">
+          <v-btn flat :value=true>
             上架
           </v-btn>
-          <v-btn flat :value="0">
+          <v-btn flat :value=false>
             下架
           </v-btn>
         </v-btn-toggle>
@@ -90,7 +90,7 @@
     data() {
       return {
         filter: {
-          saleable: 2, // 上架还是下架
+          saleable: true, // 上架还是下架
           search: '', // 搜索过滤字段
         },
         totalGoods: 0, // 总条数
@@ -135,7 +135,7 @@
         this.$http.get("/item/spu/page", {
           params: {
             key: this.filter.search, // 搜索条件
-            saleable: this.filter.saleable, // 上下架
+            saleable: this.filter.saleable === 0 ? null : this.filter.saleable, // 上下架
             page: this.pagination.page,// 当前页
             rows: this.pagination.rowsPerPage,// 每页大小
           }

@@ -77,6 +77,11 @@
         show: false,// 控制对话框的显示
         oldBrand: {}, // 即将被编辑的品牌数据
         isEdit: false, // 是否是编辑
+        //删除提示框
+        snackbar: false,
+        timeout: 3000, // Snackbar 显示时间，单位为毫秒
+        color: 'success', // Snackbar 的颜色，可以根据成功或失败选择不同的颜色
+        message: '', // Snackbar 显示的消息
       }
     },
     mounted() { // 渲染后执行
@@ -86,9 +91,9 @@
     watch: {
       pagination: { // 监视pagination属性的变化
         deep: true, // deep为true，会监视pagination的属性及属性中的对象属性变化
-        handler() {
+        handler(newVal, oldVal) {
           // 变化后的回调函数，这里我们再次调用getDataFromServer即可
-          this.getDataFromServer();
+            this.getDataFromServer();
         }
       },
       search: { // 监视搜索字段
@@ -137,18 +142,13 @@
             this.oldBrand.categories = data;
           })
       },
-      deleteBrand(Brand){
-        this.$http({
-          method: 'DELETE',
-          url: '/item/brand',
-          data: Brand
-        }).then(() => {
-          this.getDataFromServer();
-          this.$message.success("删除成功！");
-        })
-          .catch(() => {
-            this.$message.error("删除失败！");
-          });
+      deleteBrand(oldBrand){
+        // 根据品牌信息查询商品分类
+        this.$http.delete("/item/brand/"+oldBrand.id)
+          .then(() => {
+            this.$message.success("删除成功！");
+            this.totalBrands-=1;
+          })
       },
       closeWindow(){
         // 重新加载数据
